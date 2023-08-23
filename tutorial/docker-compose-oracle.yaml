@@ -14,6 +14,14 @@ services:
      - zookeeper
     environment:
      - ZOOKEEPER_CONNECT=zookeeper:2181
+  mysql:
+    image: quay.io/debezium/example-mysql:${DEBEZIUM_VERSION}
+    ports:
+     - 3306:3306
+    environment:
+     - MYSQL_ROOT_PASSWORD=debezium
+     - MYSQL_USER=mysqluser
+     - MYSQL_PASSWORD=mysqlpw
   connect:
     image: debezium/connect-with-oracle-jdbc:${DEBEZIUM_VERSION}
     build:
@@ -35,3 +43,16 @@ services:
      - KAFKA_DEBUG=true
      - DEBUG_SUSPEND_FLAG=n
      - JAVA_DEBUG_PORT=0.0.0.0:5005
+    volumes:
+     - /home/vagrant/confluentinc-kafka-connect-jdbc-10.7.3:/kafka/connect/confluentinc-kafka-connect-jdbc
+  kafdrop:
+    container_name: kafdrop
+    image: obsidiandynamics/kafdrop
+    restart: "no"
+    environment:
+      KAFKA_BROKERCONNECT: "kafka:9092"
+      #      JVM_OPTS: "-Xms16M -Xmx512M -Xss180K -XX:-TieredCompilation -XX:+UseStringDeduplication -noverify"
+    ports:
+      - 9000:9000
+    depends_on:
+      - kafka

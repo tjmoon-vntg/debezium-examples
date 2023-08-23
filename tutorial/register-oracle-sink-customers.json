@@ -1,0 +1,17 @@
+{
+    "name": "jdbc-sink-customers",
+    "config": {
+        "connector.class": "io.confluent.connect.jdbc.JdbcSinkConnector",
+        "tasks.max": "1",
+        "table.name.format": "CUSTOMERS",
+        "topics": "customers",
+        "connection.url": "jdbc:oracle:thin:@10.0.2.15:1521:ORCLCDB",
+        "connection.user": "c##dbzuser",
+        "connection.password": "dbz",
+        "auto.create": "true",
+        "insert.mode": "upsert",
+        "delete.enabled": "true",
+        "pk.fields": "id",
+        "pk.mode": "record_key"
+    }
+}
